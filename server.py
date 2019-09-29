@@ -53,18 +53,29 @@ def resetCon():
     conAddr = ""
     connected = False
 
+maxPackages = 25
+
 def connected():
     global conAddr
     sock.settimeout(4.0)
+    packCount = 0
+    startTime = time.time()
     while True:
-        try:
-            i, addr = recMsg()
-            if addr[0] == conAddr[0] and i != -1:
-                sendRes(i, conAddr)
-        except socket.timeout as e:
-            print("client timed out")
-            resetCon()
-            break
+        currentTime = time.time()
+        timeElapsed = currentTime - startTime
+        if timeElapsed > 1.0:
+            packCount = 0
+            startTime = time.time()
+        if packCount <= maxPackages:
+            try:
+                i, addr = recMsg()
+                if addr[0] == conAddr[0] and i != -1:
+                    sendRes(i, conAddr)
+                    packCount += 1
+            except socket.timeout as e:
+                print("client timed out")
+                resetCon()
+                break
     
 while True:
     waitForSyn()

@@ -14,6 +14,7 @@ conCount = 0
 
 connected = False
 conAddr = None
+auto = True
 
 parser = configparser.RawConfigParser()
 parser.read("./opt.conf")

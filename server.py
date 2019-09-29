@@ -1,5 +1,6 @@
 import socket
 import time
+import configparser
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 hostname = socket.gethostname()
@@ -9,6 +10,11 @@ print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 connected = False
 conAddr = None
+
+parser = configparser.RawConfigParser()
+parser.read("./opt.conf")
+maxPackages = parser.getint('server', 'maxpackages')
+
 
 def printByte(data):
     print(data.decode("utf-8"))
@@ -52,8 +58,6 @@ def resetCon():
     sendToAddr("con-res 0xFE", resetAddr)
     conAddr = ""
     connected = False
-
-maxPackages = 25
 
 def connected():
     global conAddr

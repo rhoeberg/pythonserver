@@ -19,6 +19,7 @@ auto = True
 parser = configparser.RawConfigParser()
 parser.read("./opt.conf")
 keepalive = parser.getboolean('client', 'keepalive')
+auto = parser.getboolean('client', 'auto')
 
 def printByte(data):
     print(data.decode("utf-8"))
